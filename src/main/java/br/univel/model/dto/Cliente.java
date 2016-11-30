@@ -41,8 +41,9 @@ public class Cliente implements Serializable {
 	 * @param idCliente
 	 *            the idCliente to set
 	 */
-	public void setIdCliente(Integer idCliente) {
+	public Cliente setIdCliente(Integer idCliente) {
 		this.idCliente = idCliente;
+		return this;
 	}
 
 	/**

@@ -6,18 +6,23 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
+import br.univel.control.EnviarProfissional;
 import br.univel.control.ListarProfissionais;
 import br.univel.model.ProfissionalAlterar;
 import br.univel.model.ProfissionalAlterar;
+import br.univel.model.dto.Profissional;
 import br.univel.model.dto.Profissional;
 import br.univel.model.dto.Profissional;
 import br.univel.model.enums.Solicitacao;
@@ -29,6 +34,13 @@ public class PainelProfissional extends JPanel {
 	private DefaultTableModel modelo;
 
 	public PainelProfissional() {
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentShown(ComponentEvent arg0) {
+				carregarTabela();
+			}
+		});
+
 		this.setSize(700, 600);
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -48,27 +60,11 @@ public class PainelProfissional extends JPanel {
 		gbc_scrollPane.gridy = 0;
 		add(scrollPane, gbc_scrollPane);
 
-		modelo = (new DefaultTableModel(new Object[][] {}, new String[] { "Nome", "Data Nasc", "Login", "" }) {
-			Class[] columnTypes = new Class[] { String.class, String.class, String.class, Integer.class };
+		modelo = createModel();
 
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
 		tabelaProfissionais = new JTable();
 		tabelaProfissionais.setModel(modelo);
-		tabelaProfissionais.getColumnModel().getColumn(0).setResizable(false);
-		tabelaProfissionais.getColumnModel().getColumn(0).setPreferredWidth(318);
-		tabelaProfissionais.getColumnModel().getColumn(1).setResizable(false);
-		tabelaProfissionais.getColumnModel().getColumn(1).setPreferredWidth(101);
-		tabelaProfissionais.getColumnModel().getColumn(2).setResizable(false);
-		tabelaProfissionais.getColumnModel().getColumn(2).setPreferredWidth(98);
-		tabelaProfissionais.getColumnModel().getColumn(3).setResizable(false);
-		tabelaProfissionais.getColumnModel().getColumn(3).setMinWidth(0);
-		tabelaProfissionais.getColumnModel().getColumn(3).setMaxWidth(0);
-		tabelaProfissionais.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tabelaProfissionais.setDefaultEditor(Object.class, null);
-
+		atualizarTabela();
 		scrollPane.setViewportView(tabelaProfissionais);
 
 		JButton btnAdicionar = new JButton("+");
@@ -89,7 +85,24 @@ public class PainelProfissional extends JPanel {
 		JButton btnRemover = new JButton("-");
 		btnRemover.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				if (tabelaProfissionais.getSelectedRow() >= 0) {
+					Profissional profissionalAuxiliar = new Profissional();
+					profissionalAuxiliar
+							.setNomeProfissional(
+									(String) tabelaProfissionais.getValueAt(tabelaProfissionais.getSelectedRow(), 0))
+							.setDataNascimento(
+									(String) tabelaProfissionais.getValueAt(tabelaProfissionais.getSelectedRow(), 1))
+							.setLogin((String) tabelaProfissionais.getValueAt(tabelaProfissionais.getSelectedRow(), 2))
+							.setSenha((String) tabelaProfissionais.getValueAt(tabelaProfissionais.getSelectedRow(), 3))
+							.setIdProfissional(Integer.parseInt(
+									(String) tabelaProfissionais.getValueAt(tabelaProfissionais.getSelectedRow(), 4)))
+							.setRequisicao(Solicitacao.EXCLUIR);
+					new EnviarProfissional().enviar(profissionalAuxiliar);
+				} else {
+					JOptionPane.showMessageDialog(null, "Nenhum PROFISSIONAL selecionado!");
+					return;
+				}
+				carregarTabela();
 			}
 		});
 		GridBagConstraints gbc_btnRemover = new GridBagConstraints();
@@ -102,21 +115,27 @@ public class PainelProfissional extends JPanel {
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (tabelaProfissionais.getSelectedRow() > 0) {
+				if (tabelaProfissionais.getSelectedRow() >= 0) {
 					Profissional profissionalAuxiliar = new Profissional();
 					profissionalAuxiliar
-							.setNomeProfissional((String) tabelaProfissionais.getValueAt(tabelaProfissionais.getSelectedRow(), 0));
-					profissionalAuxiliar
-							.setDataNascimento((String) tabelaProfissionais.getValueAt(tabelaProfissionais.getSelectedRow(), 1));
-					profissionalAuxiliar
-							.setLogin((String) tabelaProfissionais.getValueAt(tabelaProfissionais.getSelectedRow(), 2));
-					profissionalAuxiliar.setIdProfissional(
-							Integer.parseInt((String) tabelaProfissionais.getValueAt(tabelaProfissionais.getSelectedRow(), 3)));
-					profissionalAuxiliar.setRequisicao(Solicitacao.ALTERAR);
+							.setNomeProfissional(
+									(String) tabelaProfissionais.getValueAt(tabelaProfissionais.getSelectedRow(), 0))
+							.setDataNascimento(
+									(String) tabelaProfissionais.getValueAt(tabelaProfissionais.getSelectedRow(), 1))
+
+							.setLogin((String) tabelaProfissionais.getValueAt(tabelaProfissionais.getSelectedRow(), 2))
+							.setSenha((String) tabelaProfissionais.getValueAt(tabelaProfissionais.getSelectedRow(), 3))
+							.setIdProfissional(Integer.parseInt(
+									(String) tabelaProfissionais.getValueAt(tabelaProfissionais.getSelectedRow(), 4)))
+							.setRequisicao(Solicitacao.ALTERAR);
 					ProfissionalAlterar.getInstancia().setProfissional(profissionalAuxiliar);
+				} else {
+					JOptionPane.showMessageDialog(null, "Nenhum PROFISSIONAL selecionado!");
+					return;
 				}
 				CardLayout cardLayout = (CardLayout) (TelaPrincipal.getCards().getLayout());
 				cardLayout.show(TelaPrincipal.getCards(), Telas.DADOS_PROFISSIONAL.toString());
+
 			}
 		});
 		GridBagConstraints gbc_btnEditar = new GridBagConstraints();
@@ -129,18 +148,48 @@ public class PainelProfissional extends JPanel {
 		carregarTabela();
 	}
 
+	private void atualizarTabela() {
+		tabelaProfissionais.getColumnModel().getColumn(0).setResizable(false);
+		tabelaProfissionais.getColumnModel().getColumn(0).setPreferredWidth(318);
+		tabelaProfissionais.getColumnModel().getColumn(1).setResizable(false);
+		tabelaProfissionais.getColumnModel().getColumn(1).setPreferredWidth(101);
+		tabelaProfissionais.getColumnModel().getColumn(2).setResizable(false);
+		tabelaProfissionais.getColumnModel().getColumn(2).setPreferredWidth(98);
+		tabelaProfissionais.getColumnModel().getColumn(3).setResizable(false);
+		tabelaProfissionais.getColumnModel().getColumn(3).setMinWidth(0);
+		tabelaProfissionais.getColumnModel().getColumn(3).setMaxWidth(0);
+		tabelaProfissionais.getColumnModel().getColumn(4).setResizable(false);
+		tabelaProfissionais.getColumnModel().getColumn(4).setMinWidth(0);
+		tabelaProfissionais.getColumnModel().getColumn(4).setMaxWidth(0);
+		tabelaProfissionais.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tabelaProfissionais.setDefaultEditor(Object.class, null);
+	}
+
 	private void carregarTabela() {
+		Profissional profissionalRequisicao = new Profissional();
+		profissionalRequisicao.setRequisicao(Solicitacao.LISTAR);
+
 		ArrayList<Profissional> listaProfissionais = new ArrayList<>();
-		Profissional profissional = new Profissional();
-		profissional.setRequisicao(Solicitacao.LISTAR);
+		modelo = createModel();
 
-		listaProfissionais = ListarProfissionais.getListaProfissionais(profissional);
+		listaProfissionais = ListarProfissionais.getListaProfissionais(profissionalRequisicao);
 
-		listaProfissionais.forEach(cliente -> {
-			modelo.addRow(new String[] { cliente.getNomeProfissional(), cliente.getDataNascimento(),
-					cliente.getLogin(), cliente.getIdProfissional().toString() });
+		listaProfissionais.forEach(profissional -> {
+			modelo.addRow(new String[] { profissional.getNomeProfissional(), profissional.getDataNascimento(),
+					profissional.getLogin(), profissional.getSenha(), profissional.getIdProfissional().toString() });
 		});
 
 		tabelaProfissionais.setModel(modelo);
+		atualizarTabela();
+	}
+
+	private DefaultTableModel createModel() {
+		return (new DefaultTableModel(new Object[][] {}, new String[] { "Nome", "Data Nasc", "Login", "", "" }) {
+			Class[] columnTypes = new Class[] { String.class, String.class, String.class, String.class, Integer.class };
+
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
 	}
 }

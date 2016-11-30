@@ -1,6 +1,5 @@
 package br.univel.model;
 
-import br.univel.model.dto.Cliente;
 import br.univel.model.dto.Profissional;
 
 public class ProfissionalAlterar {

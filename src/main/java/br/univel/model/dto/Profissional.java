@@ -41,8 +41,9 @@ public class Profissional implements Serializable {
 	 * @param idUsuario
 	 *            the idUsuario to set
 	 */
-	public void setIdProfissional(Integer idUsuario) {
+	public Profissional setIdProfissional(Integer idUsuario) {
 		this.idProfissional = idUsuario;
+		return this;
 	}
 
 	/**
@@ -56,8 +57,9 @@ public class Profissional implements Serializable {
 	 * @param requisicao
 	 *            the requisicao to set
 	 */
-	public void setRequisicao(Solicitacao requisicao) {
+	public Profissional setRequisicao(Solicitacao requisicao) {
 		Requisicao = requisicao;
+		return this;
 	}
 
 	/**

@@ -29,7 +29,6 @@ import br.univel.view.TelaPrincipal;
 public class PainelCliente extends JPanel {
 	private JTable tabelaClientes;
 	private DefaultTableModel modelo;
-	private ArrayList<Cliente> listaClientes = new ArrayList<>();
 
 	public PainelCliente() {
 		addComponentListener(new ComponentAdapter() {
@@ -58,19 +57,11 @@ public class PainelCliente extends JPanel {
 		gbc_scrollPane.gridy = 0;
 		add(scrollPane, gbc_scrollPane);
 
-		modelo = (new DefaultTableModel(new Object[][] {}, new String[] { "Nome", "Data Nasc", "CPF", "RG", ""}) {
-			Class[] columnTypes = new Class[] { String.class, String.class, String.class, String.class, Integer.class };
-
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
+		modelo = craeteModel();
 
 		tabelaClientes = new JTable();
 		tabelaClientes.setModel(modelo);
 		atualizarTabela();
-		tabelaClientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		tabelaClientes.setDefaultEditor(Object.class, null);
 		scrollPane.setViewportView(tabelaClientes);
 
 		JButton btnAdicionar = new JButton("+");
@@ -94,15 +85,13 @@ public class PainelCliente extends JPanel {
 				if (tabelaClientes.getSelectedRow() >= 0) {
 					Cliente clienteAuxiliar = new Cliente();
 					clienteAuxiliar
-							.setNomeCliente((String) tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 0));
-					clienteAuxiliar
-							.setDataNascimento((String) tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 1));
-					clienteAuxiliar
-							.setNumeroCPF((String) tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 2));
-					clienteAuxiliar.setNumeroRG((String) tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 3));
-					clienteAuxiliar.setIdCliente(
-							Integer.parseInt((String) tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 4)));
-					clienteAuxiliar.setRequisicao(Solicitacao.EXCLUIR);
+							.setNomeCliente((String) tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 0))
+							.setDataNascimento((String) tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 1))
+							.setNumeroCPF((String) tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 2))
+							.setNumeroRG((String) tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 3))
+							.setIdCliente(Integer
+									.parseInt((String) tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 4)))
+							.setRequisicao(Solicitacao.EXCLUIR);
 					new EnviarCliente().enviar(clienteAuxiliar);
 				} else {
 					JOptionPane.showMessageDialog(null, "Nenhum CLIENTE selecionado!");
@@ -124,15 +113,13 @@ public class PainelCliente extends JPanel {
 				if (tabelaClientes.getSelectedRow() >= 0) {
 					Cliente clienteAuxiliar = new Cliente();
 					clienteAuxiliar
-							.setNomeCliente((String) tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 0));
-					clienteAuxiliar
-							.setDataNascimento((String) tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 1));
-					clienteAuxiliar
-							.setNumeroCPF((String) tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 2));
-					clienteAuxiliar.setNumeroRG((String) tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 3));
-					clienteAuxiliar.setIdCliente(
-							Integer.parseInt((String) tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 4)));
-					clienteAuxiliar.setRequisicao(Solicitacao.ALTERAR);
+							.setNomeCliente((String) tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 0))
+							.setDataNascimento((String) tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 1))
+							.setNumeroCPF((String) tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 2))
+							.setNumeroRG((String) tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 3))
+							.setIdCliente(Integer
+									.parseInt((String) tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 4)))
+							.setRequisicao(Solicitacao.ALTERAR);
 					ClienteAlterar.getInstancia().setCliente(clienteAuxiliar);
 				} else {
 					JOptionPane.showMessageDialog(null, "Nenhum CLIENTE selecionado!");
@@ -152,6 +139,16 @@ public class PainelCliente extends JPanel {
 		carregarTabela();
 	}
 
+	private DefaultTableModel craeteModel() {
+		return (new DefaultTableModel(new Object[][] {}, new String[] { "Nome", "Data Nasc", "CPF", "RG", "" }) {
+			Class[] columnTypes = new Class[] { String.class, String.class, String.class, String.class, Integer.class };
+
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
+	}
+
 	private void atualizarTabela() {
 		tabelaClientes.getColumnModel().getColumn(0).setResizable(false);
 		tabelaClientes.getColumnModel().getColumn(0).setPreferredWidth(318);
@@ -164,20 +161,16 @@ public class PainelCliente extends JPanel {
 		tabelaClientes.getColumnModel().getColumn(4).setResizable(false);
 		tabelaClientes.getColumnModel().getColumn(4).setMinWidth(0);
 		tabelaClientes.getColumnModel().getColumn(4).setMaxWidth(0);
+		tabelaClientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tabelaClientes.setDefaultEditor(Object.class, null);
 	}
 
 	private void carregarTabela() {
 		Cliente clienteRequisicao = new Cliente();
 		clienteRequisicao.setRequisicao(Solicitacao.LISTAR);
 
-		listaClientes = new ArrayList<>();
-		modelo = (new DefaultTableModel(new Object[][] {}, new String[] { "Nome", "Data Nasc", "CPF", "RG", "" }) {
-			Class[] columnTypes = new Class[] { String.class, String.class, String.class, String.class, Integer.class };
-
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
+		ArrayList<Cliente> listaClientes = new ArrayList<>();
+		modelo = craeteModel();
 
 		listaClientes = ListarClientes.getListaClientes(clienteRequisicao);
 
@@ -185,6 +178,7 @@ public class PainelCliente extends JPanel {
 			modelo.addRow(new String[] { cliente.getNomeCliente(), cliente.getDataNascimento().toString(),
 					cliente.getNumeroCPF(), cliente.getNumeroRG(), cliente.getIdCliente().toString() });
 		});
+
 		tabelaClientes.setModel(modelo);
 		atualizarTabela();
 	}

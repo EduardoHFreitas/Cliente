@@ -130,8 +130,6 @@ public class DadosCliente extends JPanel {
 
 				new EnviarCliente().enviar(clienteEnviar);
 
-				CardLayout cardLayout = (CardLayout) (TelaPrincipal.getCards().getLayout());
-				cardLayout.show(TelaPrincipal.getCards(), Telas.CLIENTE.toString());
 			}
 		});
 		final GridBagConstraints gbc_btnCadastrar = new GridBagConstraints();

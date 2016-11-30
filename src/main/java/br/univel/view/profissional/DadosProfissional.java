@@ -4,6 +4,8 @@ import java.awt.CardLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
@@ -13,12 +15,13 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import br.univel.control.EnviarProfissional;
+import br.univel.model.EncriptarSenhaSha256;
 import br.univel.model.ProfissionalAlterar;
+import br.univel.model.dto.Profissional;
+import br.univel.model.enums.Solicitacao;
 import br.univel.model.enums.Telas;
 import br.univel.view.TelaPrincipal;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class DadosProfissional extends JPanel {
 	private JTextField tfNome;
@@ -116,6 +119,28 @@ public class DadosProfissional extends JPanel {
 		add(tfSenha, gbc_tfRg);
 
 		btnCadastrar = new JButton("Cadastrar");
+		btnCadastrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Profissional profissionalEnviar = new Profissional();
+				profissionalEnviar.setNomeProfissional(tfNome.getText()).setDataNascimento(tfDataNasc.getText())
+						.setLogin(tfLogin.getText());
+				if (ProfissionalAlterar.getInstancia().getProfissional() == null) {
+					profissionalEnviar.setRequisicao(Solicitacao.INCLUIR)
+					.setSenha(EncriptarSenhaSha256.hashString(tfSenha.getText()));
+				} else {
+					if (!tfSenha.getText().equals("")) {
+						profissionalEnviar.setSenha(EncriptarSenhaSha256.hashString(tfSenha.getText()));
+					} else {
+						profissionalEnviar.setSenha(ProfissionalAlterar.getInstancia().getProfissional().getSenha());
+					}
+					profissionalEnviar.setRequisicao(Solicitacao.ALTERAR).setIdProfissional(
+							ProfissionalAlterar.getInstancia().getProfissional().getIdProfissional());
+				}
+
+				new EnviarProfissional().enviar(profissionalEnviar);
+
+			}
+		});
 		GridBagConstraints gbc_btnCadastrar = new GridBagConstraints();
 		gbc_btnCadastrar.insets = new Insets(0, 0, 5, 0);
 		gbc_btnCadastrar.anchor = GridBagConstraints.NORTHEAST;
@@ -149,7 +174,7 @@ public class DadosProfissional extends JPanel {
 			tfDataNasc.setText("");
 			tfLogin.setText("");
 
-			btnCadastrar.setText("Salvar");
+			btnCadastrar.setText("Cadastrar");
 		}
 	}
 }
