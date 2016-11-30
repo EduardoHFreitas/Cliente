@@ -5,14 +5,14 @@ import br.univel.model.dto.Profissional;
 
 public class ProfissionalAlterar {
 
-	private ProfissionalAlterar instancia = new ProfissionalAlterar();
+	private static ProfissionalAlterar instancia = new ProfissionalAlterar();
 	private static Profissional profissional;
 
 	private ProfissionalAlterar() {
 
 	}
 
-	public ProfissionalAlterar getInstancia() {
+	public static ProfissionalAlterar getInstancia() {
 		if (instancia == null) {
 			instancia = new ProfissionalAlterar();
 		}

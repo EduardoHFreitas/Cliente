@@ -1,12 +1,10 @@
 package br.univel.control;
 
-import java.net.ConnectException;
 import java.util.Objects;
 
 import javax.swing.JOptionPane;
 
-import br.univel.model.dto.ObjetoRetorno;
-import br.univel.model.dto.Usuario;
+import br.univel.model.dto.Profissional;
 import br.univel.view.TelaPrincipal;
 
 /**
@@ -16,21 +14,18 @@ import br.univel.view.TelaPrincipal;
  *
  */
 public class VerificarLogin {
-	private ObjetoRetorno retorno;
-	private Usuario usuarioLogado;
+	private static Profissional usuarioLogado;
 
-	public VerificarLogin(Usuario usuarioLogin) {
+	public static Boolean loginValido(Profissional usuarioLogin) {
 		Objects.requireNonNull(usuarioLogin, "Usuario nao pode ser nulo!");
 
 		ConexaoServidor conexao = new ConexaoServidor();
-		retorno = (ObjetoRetorno) conexao.ExecutaComunicacao(usuarioLogin);
-		usuarioLogado = (Usuario) retorno.getObjetoRetorno();
+		usuarioLogado = (Profissional) conexao.ExecutaComunicacao(usuarioLogin);
 
-		if (usuarioLogin != null) {
-			new TelaPrincipal();
-		} else {
+		if (usuarioLogado == null) {
 			JOptionPane.showMessageDialog(null, "Verifique seu Usuario e/ou Senha!");
-			return;
+			return false;
 		}
+		return true;
 	}
 }

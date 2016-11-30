@@ -54,16 +54,12 @@ public class TelaPrincipal extends JFrame {
 		painelInicio.add(lblNewLabel);
 		painelInicio.setBackground(Color.WHITE);
 
-		// painelMenu.add(mnMenu);
-
-		// Cpanel que conterá os cartoes
 		cards.add(painelInicio, Telas.INICIAL.toString());
 		cards.add(painelCliente, Telas.CLIENTE.toString());
 		cards.add(painelProfissional, Telas.PROFISSIONAL.toString());
 		cards.add(painelDadosCliente, Telas.DADOS_CLIENTE.toString());
 		cards.add(painelDadosProfissional, Telas.DADOS_PROFISSIONAL.toString());
 
-		// note que os cartões estão utilizando BORDERLAYOUT
 		getContentPane().add(getCards(), BorderLayout.CENTER);
 
 		getContentPane().add(painelMenu, BorderLayout.PAGE_START);

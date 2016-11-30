@@ -6,19 +6,19 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Objects;
 
 import javax.swing.JOptionPane;
 
-import br.univel.model.dto.ObjetoRetorno;
+public class ConexaoServidor {
 
-public class ConexaoServidor<T> {
-
-	public ObjetoRetorno ExecutaComunicacao(T objeto) {
+	public Object ExecutaComunicacao(Object objeto) {
 		Socket socket = null;
 		OutputStream output = null;
 		InputStream input = null;
-		ObjetoRetorno retorno = null;
+
 		try {
+			Objects.requireNonNull(objeto, "Objeto nao pode ser nulo!");
 			socket = new Socket("localhost", 5000);
 
 			output = socket.getOutputStream();
@@ -30,12 +30,11 @@ public class ConexaoServidor<T> {
 			input = socket.getInputStream();
 			ObjectInputStream objInput = new ObjectInputStream(input);
 
-			return retorno = (ObjetoRetorno) objInput.readObject();
+			return (Object) objInput.readObject();
 		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
-			//throw new RuntimeException(e);
 			JOptionPane.showMessageDialog(null,
 					"Nao foi possivel conexão com o Servidor" + "\n Verifique se o mesmo esta ativo!");
+			throw new RuntimeException(e);
 		} finally {
 			try {
 				if (input != null) {
@@ -51,6 +50,5 @@ public class ConexaoServidor<T> {
 				e.printStackTrace();
 			}
 		}
-		return retorno;
 	}
 }

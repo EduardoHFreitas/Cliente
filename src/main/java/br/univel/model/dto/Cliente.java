@@ -10,13 +10,40 @@ import br.univel.model.enums.Solicitacao;
  * @author Eduardo
  *
  */
+
 public class Cliente implements Serializable {
 
+	/**
+	 * serial version
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private Integer idCliente;
+
 	private String nomeCliente;
+
 	private String dataNascimento;
+
 	private String numeroCPF;
+
 	private String numeroRG;
+
 	private Solicitacao Requisicao;
+
+	/**
+	 * @return the idCliente
+	 */
+	public Integer getIdCliente() {
+		return idCliente;
+	}
+
+	/**
+	 * @param idCliente
+	 *            the idCliente to set
+	 */
+	public void setIdCliente(Integer idCliente) {
+		this.idCliente = idCliente;
+	}
 
 	/**
 	 * retorna o nome do cliente
@@ -106,13 +133,12 @@ public class Cliente implements Serializable {
 	}
 
 	/**
-	 * @param requisicao the requisicao to set
+	 * @param requisicao
+	 *            the requisicao to set
 	 */
 	public Cliente setRequisicao(Solicitacao requisicao) {
 		Requisicao = requisicao;
 		return this;
 	}
-
-
 
 }

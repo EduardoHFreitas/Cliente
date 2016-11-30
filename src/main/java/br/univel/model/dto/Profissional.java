@@ -10,6 +10,7 @@ import br.univel.model.enums.Solicitacao;
  * @author Eduardo
  *
  */
+
 public class Profissional implements Serializable {
 
 	/**
@@ -17,11 +18,47 @@ public class Profissional implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private Integer idProfissional;
+
 	private String nomeProfissional;
+
 	private String dataNascimento;
+
 	private String login;
+
 	private String senha;
-	private Solicitacao requisicao;
+
+	private Solicitacao Requisicao;
+
+	/**
+	 * @return the idUsuario
+	 */
+	public Integer getIdProfissional() {
+		return idProfissional;
+	}
+
+	/**
+	 * @param idUsuario
+	 *            the idUsuario to set
+	 */
+	public void setIdProfissional(Integer idUsuario) {
+		this.idProfissional = idUsuario;
+	}
+
+	/**
+	 * @return the requisicao
+	 */
+	public Solicitacao getRequisicao() {
+		return Requisicao;
+	}
+
+	/**
+	 * @param requisicao
+	 *            the requisicao to set
+	 */
+	public void setRequisicao(Solicitacao requisicao) {
+		Requisicao = requisicao;
+	}
 
 	/**
 	 * @return the nomeProfissional
@@ -86,21 +123,5 @@ public class Profissional implements Serializable {
 		this.senha = senha;
 		return this;
 	}
-
-	/**
-	 * @return the requisicao
-	 */
-	public Solicitacao getRequisicao() {
-		return requisicao;
-	}
-
-	/**
-	 * @param requisicao the requisicao to set
-	 */
-	public void setRequisicao(Solicitacao requisicao) {
-		this.requisicao = requisicao;
-	}
-
-
 
 }

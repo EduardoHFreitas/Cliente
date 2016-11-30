@@ -2,17 +2,23 @@ package br.univel.model;
 
 import br.univel.model.dto.Cliente;
 
+/**
+ * Singleton para passagem de Cliente entre telas
+ *
+ * @author Eduardo
+ *
+ */
 public class ClienteAlterar {
 
-	private ClienteAlterar instancia = new ClienteAlterar();
+	private static ClienteAlterar instancia = new ClienteAlterar();
 	private static Cliente cliente;
 
 	private ClienteAlterar() {
 
 	}
 
-	public ClienteAlterar getInstancia() {
-		if (instancia == null){
+	public static synchronized ClienteAlterar getInstancia() {
+		if (instancia == null) {
 			instancia = new ClienteAlterar();
 		}
 		return instancia;
@@ -25,6 +31,5 @@ public class ClienteAlterar {
 	public static Cliente getCliente() {
 		return cliente;
 	}
-
 
 }

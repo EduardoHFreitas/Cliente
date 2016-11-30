@@ -4,21 +4,20 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.ConnectException;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import br.univel.control.VerificarLogin;
 import br.univel.model.EncriptarSenhaSha256;
-import br.univel.model.dto.Usuario;
+import br.univel.model.dto.Profissional;
+import br.univel.model.enums.Solicitacao;
 
 /**
  * Tela inicial da aplicação responsavel pelo login do usuario;
@@ -57,15 +56,18 @@ public class Login extends JFrame {
 			 * Metodo interno para tratamento do evento "Click" do botao
 			 */
 			public void actionPerformed(final ActionEvent event) {
-				if (tfUsuario.getText().isEmpty() || tfSenha.getText().isEmpty()){
+				if (tfUsuario.getText().isEmpty() || tfSenha.getText().isEmpty()) {
 					return;
 				}
-				Usuario usuarioLogin = new Usuario(tfUsuario.getText(),
-						new EncriptarSenhaSha256().hashString(tfSenha.getPassword().toString().trim()));
+				Profissional usuarioLogin = new Profissional();
+				usuarioLogin.setLogin(tfUsuario.getText())
+						.setSenha(new EncriptarSenhaSha256().hashString(tfSenha.getText().trim()))
+						.setRequisicao(Solicitacao.LOGIN);
 
-				new VerificarLogin(usuarioLogin);
-				new TelaPrincipal();
-				dispose();
+				if (VerificarLogin.loginValido(usuarioLogin)){
+					new TelaPrincipal();
+					dispose();
+				}
 			}
 		});
 

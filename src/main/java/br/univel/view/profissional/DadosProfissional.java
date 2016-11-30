@@ -1,8 +1,11 @@
 package br.univel.view.profissional;
 
+import java.awt.CardLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -11,19 +14,33 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import br.univel.model.ProfissionalAlterar;
+import br.univel.model.enums.Telas;
+import br.univel.view.TelaPrincipal;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class DadosProfissional extends JPanel {
 	private JTextField tfNome;
 	private JTextField tfDataNasc;
 	private JTextField tfLogin;
 	private JPasswordField tfSenha;
+	private JButton btnCadastrar;
+	private JButton btnVoltar;
 
 	public DadosProfissional() {
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentShown(ComponentEvent arg0) {
+				preencheCampos();
+			}
+		});
+
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 30, 46, 359, 0 };
-		gridBagLayout.rowHeights = new int[] { 30, 20, 20, 20, 20, 23, 0 };
+		gridBagLayout.rowHeights = new int[] { 30, 20, 20, 20, 20, 23, 0, 0 };
 		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		setLayout(gridBagLayout);
 
 		JLabel lblNewLabel = new JLabel("Nome:");
@@ -98,21 +115,41 @@ public class DadosProfissional extends JPanel {
 		gbc_tfRg.gridy = 4;
 		add(tfSenha, gbc_tfRg);
 
-		JButton btnCadastrar = new JButton("Cadastrar");
+		btnCadastrar = new JButton("Cadastrar");
 		GridBagConstraints gbc_btnCadastrar = new GridBagConstraints();
+		gbc_btnCadastrar.insets = new Insets(0, 0, 5, 0);
 		gbc_btnCadastrar.anchor = GridBagConstraints.NORTHEAST;
 		gbc_btnCadastrar.gridx = 2;
 		gbc_btnCadastrar.gridy = 5;
 		add(btnCadastrar, gbc_btnCadastrar);
 
-		preencheCampos();
+		btnVoltar = new JButton("Voltar");
+		btnVoltar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				CardLayout cardLayout = (CardLayout) (TelaPrincipal.getCards().getLayout());
+				cardLayout.show(TelaPrincipal.getCards(), Telas.PROFISSIONAL.toString());
+			}
+		});
+		GridBagConstraints gbc_btnVoltar = new GridBagConstraints();
+		gbc_btnVoltar.anchor = GridBagConstraints.NORTHEAST;
+		gbc_btnVoltar.gridx = 2;
+		gbc_btnVoltar.gridy = 6;
+		add(btnVoltar, gbc_btnVoltar);
 	}
 
 	public void preencheCampos() {
-		if (ProfissionalAlterar.getProfissional() != null){
+		if (ProfissionalAlterar.getProfissional() != null) {
 			tfNome.setText(ProfissionalAlterar.getProfissional().getNomeProfissional());
 			tfDataNasc.setText(ProfissionalAlterar.getProfissional().getDataNascimento());
 			tfLogin.setText(ProfissionalAlterar.getProfissional().getLogin());
+
+			btnCadastrar.setText("Salvar");
+		} else {
+			tfNome.setText("");
+			tfDataNasc.setText("");
+			tfLogin.setText("");
+
+			btnCadastrar.setText("Salvar");
 		}
 	}
 }
