@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -34,7 +35,11 @@ public class PainelCliente extends JPanel {
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent arg0) {
-				carregarTabela();
+				try {
+					carregarTabela();
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
 			}
 		});
 
@@ -92,12 +97,20 @@ public class PainelCliente extends JPanel {
 							.setIdCliente(Integer
 									.parseInt((String) tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 4)))
 							.setRequisicao(Solicitacao.EXCLUIR);
-					new EnviarCliente().enviar(clienteAuxiliar);
+					try {
+						EnviarCliente.enviar(clienteAuxiliar);
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Nenhum CLIENTE selecionado!");
 					return;
 				}
-				carregarTabela();
+				try {
+					carregarTabela();
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
 			}
 		});
 		GridBagConstraints gbc_btnRemover = new GridBagConstraints();
@@ -136,7 +149,11 @@ public class PainelCliente extends JPanel {
 		gbc_btnEditar.gridy = 3;
 		add(btnEditar, gbc_btnEditar);
 
-		carregarTabela();
+		try {
+			carregarTabela();
+		} catch (IOException e1) {
+			throw new RuntimeException(e1);
+		}
 	}
 
 	private DefaultTableModel craeteModel() {
@@ -165,14 +182,14 @@ public class PainelCliente extends JPanel {
 		tabelaClientes.setDefaultEditor(Object.class, null);
 	}
 
-	private void carregarTabela() {
+	private void carregarTabela() throws IOException {
 		Cliente clienteRequisicao = new Cliente();
 		clienteRequisicao.setRequisicao(Solicitacao.LISTAR);
 
 		ArrayList<Cliente> listaClientes = new ArrayList<>();
 		modelo = craeteModel();
 
-		listaClientes = ListarClientes.getListaClientes(clienteRequisicao);
+		listaClientes = (ArrayList<Cliente>) ListarClientes.getListaClientes(clienteRequisicao);
 
 		listaClientes.forEach(cliente -> {
 			modelo.addRow(new String[] { cliente.getNomeCliente(), cliente.getDataNascimento().toString(),

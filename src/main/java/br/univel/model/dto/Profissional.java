@@ -28,7 +28,7 @@ public class Profissional implements Serializable {
 
 	private String senha;
 
-	private Solicitacao Requisicao;
+	private Solicitacao requisicao;
 
 	/**
 	 * @return the idUsuario
@@ -41,7 +41,7 @@ public class Profissional implements Serializable {
 	 * @param idUsuario
 	 *            the idUsuario to set
 	 */
-	public Profissional setIdProfissional(Integer idUsuario) {
+	public Profissional setIdProfissional(final Integer idUsuario) {
 		this.idProfissional = idUsuario;
 		return this;
 	}
@@ -50,15 +50,15 @@ public class Profissional implements Serializable {
 	 * @return the requisicao
 	 */
 	public Solicitacao getRequisicao() {
-		return Requisicao;
+		return requisicao;
 	}
 
 	/**
 	 * @param requisicao
 	 *            the requisicao to set
 	 */
-	public Profissional setRequisicao(Solicitacao requisicao) {
-		Requisicao = requisicao;
+	public Profissional setRequisicao(final Solicitacao requisicao) {
+		this.requisicao = requisicao;
 		return this;
 	}
 

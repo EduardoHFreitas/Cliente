@@ -11,10 +11,14 @@ public enum Telas {
 
 	private String valor;
 
-	Telas(String valor) {
+	Telas(final String valor) {
 		this.valor = valor;
 	}
 
+	/**
+	 * Retorna o valor da Enum
+	 * @return
+	 */
 	public String getValor() {
 		return this.valor;
 	}

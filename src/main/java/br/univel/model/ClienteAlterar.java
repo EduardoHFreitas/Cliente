@@ -8,7 +8,7 @@ import br.univel.model.dto.Cliente;
  * @author Eduardo
  *
  */
-public class ClienteAlterar {
+public final class ClienteAlterar {
 
 	private static ClienteAlterar instancia = new ClienteAlterar();
 	private static Cliente cliente;
@@ -17,6 +17,10 @@ public class ClienteAlterar {
 
 	}
 
+	/**
+	 * Retornar instancia do singleton
+	 * @return
+	 */
 	public static synchronized ClienteAlterar getInstancia() {
 		if (instancia == null) {
 			instancia = new ClienteAlterar();
@@ -24,10 +28,18 @@ public class ClienteAlterar {
 		return instancia;
 	}
 
-	public void setCliente(Cliente cliente) {
+	/**
+	 * Setar um valor ao atributo cliente
+	 * @param cliente
+	 */
+	public void setCliente(final Cliente cliente) {
 		this.cliente = cliente;
 	}
 
+	/**
+	 * Retornar o valor do atributo cliente
+	 * @return
+	 */
 	public static Cliente getCliente() {
 		return cliente;
 	}

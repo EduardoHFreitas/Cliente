@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -97,7 +98,11 @@ public class PainelProfissional extends JPanel {
 							.setIdProfissional(Integer.parseInt(
 									(String) tabelaProfissionais.getValueAt(tabelaProfissionais.getSelectedRow(), 4)))
 							.setRequisicao(Solicitacao.EXCLUIR);
-					new EnviarProfissional().enviar(profissionalAuxiliar);
+					try {
+						EnviarProfissional.enviar(profissionalAuxiliar);
+					} catch (IOException e1) {
+						throw new RuntimeException(e1);
+					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Nenhum PROFISSIONAL selecionado!");
 					return;
@@ -172,7 +177,12 @@ public class PainelProfissional extends JPanel {
 		ArrayList<Profissional> listaProfissionais = new ArrayList<>();
 		modelo = createModel();
 
-		listaProfissionais = ListarProfissionais.getListaProfissionais(profissionalRequisicao);
+		try {
+			listaProfissionais = (ArrayList<Profissional>) ListarProfissionais
+					.getListaProfissionais(profissionalRequisicao);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 
 		listaProfissionais.forEach(profissional -> {
 			modelo.addRow(new String[] { profissional.getNomeProfissional(), profissional.getDataNascimento(),

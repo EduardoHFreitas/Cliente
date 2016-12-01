@@ -1,20 +1,35 @@
 package br.univel.control;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import javax.swing.JOptionPane;
 
 import br.univel.model.dto.Cliente;
-import br.univel.model.dto.Profissional;
 
-public class EnviarCliente {
-	private static Object retorno;
+/**
+ * Enviar um Cliente para o servidor
+ *
+ * @author Eduardo
+ *
+ */
+public final class EnviarCliente {
 
-	public static boolean enviar(Cliente clienteIncluir) {
+	private EnviarCliente() {
+	}
+
+	/**
+	 * Executa a comunicação com o server e envia o objeto cliente
+	 *
+	 * @param clienteIncluir
+	 * @return
+	 * @throws IOException
+	 */
+	public static boolean enviar(final Cliente clienteIncluir) throws IOException {
 		Objects.requireNonNull(clienteIncluir, "Usuario nao pode ser nulo!");
 
 		ConexaoServidor conexao = new ConexaoServidor();
-		retorno = (Object) conexao.ExecutaComunicacao(clienteIncluir);
+		Object retorno = (Object) conexao.executaComunicacao(clienteIncluir);
 
 		if (retorno.getClass().equals(String.class)) {
 			String retornoCast = (String) retorno;

@@ -9,7 +9,12 @@ import java.security.NoSuchAlgorithmException;
  * @author Eduardo
  *
  */
-public class EncriptarSenhaSha256 {
+public final class EncriptarSenhaSha256 {
+
+	private static final Integer NUMERO_CONTROLE = 1;
+
+	private EncriptarSenhaSha256() {
+	}
 
 	/**
 	 * Recebe o texto e invoca o metodo responsavel pela criptografia
@@ -33,7 +38,7 @@ public class EncriptarSenhaSha256 {
 		StringBuffer hexString = new StringBuffer();
 		for (int i = 0; i < bytes.length; i++) {
 			String hex = Integer.toHexString(0xff & bytes[i]);
-			if (hex.length() == 1){
+			if (hex.length() == NUMERO_CONTROLE){
 				hexString.append('0');
 			}
 			hexString.append(hex);

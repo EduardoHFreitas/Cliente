@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -61,12 +62,16 @@ public class Login extends JFrame {
 				}
 				Profissional usuarioLogin = new Profissional();
 				usuarioLogin.setLogin(tfUsuario.getText())
-						.setSenha(new EncriptarSenhaSha256().hashString(tfSenha.getText().trim()))
+						.setSenha(EncriptarSenhaSha256.hashString(tfSenha.getText().trim()))
 						.setRequisicao(Solicitacao.LOGIN);
 
-				if (VerificarLogin.loginValido(usuarioLogin)){
-					new TelaPrincipal();
-					dispose();
+				try {
+					if (VerificarLogin.loginValido(usuarioLogin)){
+						new TelaPrincipal();
+						dispose();
+					}
+				} catch (IOException e) {
+					throw new RuntimeException(e);
 				}
 			}
 		});

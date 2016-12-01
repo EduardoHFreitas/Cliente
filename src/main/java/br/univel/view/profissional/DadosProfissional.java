@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -126,7 +127,7 @@ public class DadosProfissional extends JPanel {
 						.setLogin(tfLogin.getText());
 				if (ProfissionalAlterar.getInstancia().getProfissional() == null) {
 					profissionalEnviar.setRequisicao(Solicitacao.INCLUIR)
-					.setSenha(EncriptarSenhaSha256.hashString(tfSenha.getText()));
+							.setSenha(EncriptarSenhaSha256.hashString(tfSenha.getText()));
 				} else {
 					if (!tfSenha.getText().equals("")) {
 						profissionalEnviar.setSenha(EncriptarSenhaSha256.hashString(tfSenha.getText()));
@@ -137,7 +138,11 @@ public class DadosProfissional extends JPanel {
 							ProfissionalAlterar.getInstancia().getProfissional().getIdProfissional());
 				}
 
-				new EnviarProfissional().enviar(profissionalEnviar);
+				try {
+					EnviarProfissional.enviar(profissionalEnviar);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
 
 			}
 		});

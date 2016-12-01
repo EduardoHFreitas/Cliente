@@ -1,11 +1,11 @@
 package br.univel.control;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import javax.swing.JOptionPane;
 
 import br.univel.model.dto.Profissional;
-import br.univel.view.TelaPrincipal;
 
 /**
  * Verificar o login do usuario no servidor
@@ -13,19 +13,29 @@ import br.univel.view.TelaPrincipal;
  * @author Eduardo
  *
  */
-public class VerificarLogin {
-	private static Profissional usuarioLogado;
+public final class VerificarLogin {
 
-	public static Boolean loginValido(Profissional usuarioLogin) {
+	private VerificarLogin(){
+
+	}
+
+	/**
+	 * Enviar um profissional ao servidor e verificar o login
+	 * @param usuarioLogin
+	 * @return
+	 * @throws IOException
+	 */
+	public static Boolean loginValido(final Profissional usuarioLogin) throws IOException {
+		Boolean retorno = true;
 		Objects.requireNonNull(usuarioLogin, "Usuario nao pode ser nulo!");
 
 		ConexaoServidor conexao = new ConexaoServidor();
-		usuarioLogado = (Profissional) conexao.ExecutaComunicacao(usuarioLogin);
+		Profissional usuarioLogado = (Profissional) conexao.executaComunicacao(usuarioLogin);
 
 		if (usuarioLogado == null) {
 			JOptionPane.showMessageDialog(null, "Verifique seu Usuario e/ou Senha!");
-			return false;
+			retorno = false;
 		}
-		return true;
+		return retorno;
 	}
 }

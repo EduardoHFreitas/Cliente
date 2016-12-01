@@ -1,22 +1,35 @@
 package br.univel.control;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 import br.univel.model.dto.Cliente;
 
-public class ListarClientes {
+/**
+ * Listar clientes do servidor
+ *
+ * @author Eduardo
+ *
+ */
+public final class ListarClientes {
 
-	private static Object retorno;
-	private static ArrayList<Cliente> listaClientes = null;
+	private ListarClientes() {
 
-	public static ArrayList<Cliente> getListaClientes(Cliente cliente) {
+	}
+
+	/**
+	 * Faz uma requisicao de lista de clientes ao servidor e retorna a lista obtida
+	 * @param cliente
+	 * @return
+	 * @throws IOException
+	 */
+	public static List<Cliente> getListaClientes(final Cliente cliente) throws IOException {
 		Objects.requireNonNull(cliente, "Usuario nao pode ser nulo!");
 
 		ConexaoServidor conexao = new ConexaoServidor();
-		retorno = (Object) conexao.ExecutaComunicacao(cliente);
-		listaClientes = (ArrayList<Cliente>) retorno;
+		Object retorno = (Object) conexao.executaComunicacao(cliente);
 
-		return listaClientes;
+		return (List<Cliente>) retorno;
 	}
 }

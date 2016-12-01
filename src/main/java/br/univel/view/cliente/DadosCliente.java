@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -128,7 +129,11 @@ public class DadosCliente extends JPanel {
 							.setIdCliente(ClienteAlterar.getInstancia().getCliente().getIdCliente());
 				}
 
-				new EnviarCliente().enviar(clienteEnviar);
+				try {
+					EnviarCliente.enviar(clienteEnviar);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
 
 			}
 		});

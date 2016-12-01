@@ -1,6 +1,7 @@
 package br.univel.control;
 
 import java.io.IOException;
+
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,9 +11,22 @@ import java.util.Objects;
 
 import javax.swing.JOptionPane;
 
+/**
+ * Executa uma conexção com o servidor
+ *
+ * @author Eduardo
+ *
+ */
 public class ConexaoServidor {
 
-	public Object ExecutaComunicacao(Object objeto) {
+	/**
+	 * Escrita e leitura no socket
+	 *
+	 * @param objeto
+	 * @return
+	 * @throws IOException
+	 */
+	public Object executaComunicacao(final Object objeto) throws IOException {
 		Socket socket = null;
 		OutputStream output = null;
 		InputStream input = null;
@@ -36,18 +50,14 @@ public class ConexaoServidor {
 					"Nao foi possivel conexão com o Servidor" + "\n Verifique se o mesmo esta ativo!");
 			throw new RuntimeException(e);
 		} finally {
-			try {
-				if (input != null) {
-					input.close();
-				}
-				if (output != null) {
-					output.close();
-				}
-				if (socket != null) {
-					socket.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
+			if (input != null) {
+				input.close();
+			}
+			if (output != null) {
+				output.close();
+			}
+			if (socket != null) {
+				socket.close();
 			}
 		}
 	}
