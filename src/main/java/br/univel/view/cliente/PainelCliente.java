@@ -27,6 +27,11 @@ import br.univel.model.enums.Solicitacao;
 import br.univel.model.enums.Telas;
 import br.univel.view.TelaPrincipal;
 
+/**
+ * Tela para listar clientes
+ * @author Eduardo
+ *
+ */
 public class PainelCliente extends JPanel {
 	private JTable tabelaClientes;
 	private DefaultTableModel modelo;
@@ -156,6 +161,10 @@ public class PainelCliente extends JPanel {
 		}
 	}
 
+	/**
+	 * Redefinir modelo da tabela
+	 * @return
+	 */
 	private DefaultTableModel craeteModel() {
 		return (new DefaultTableModel(new Object[][] {}, new String[] { "Nome", "Data Nasc", "CPF", "RG", "" }) {
 			Class[] columnTypes = new Class[] { String.class, String.class, String.class, String.class, Integer.class };
@@ -166,6 +175,9 @@ public class PainelCliente extends JPanel {
 		});
 	}
 
+	/**
+	 * Atualizar tabela
+	 */
 	private void atualizarTabela() {
 		tabelaClientes.getColumnModel().getColumn(0).setResizable(false);
 		tabelaClientes.getColumnModel().getColumn(0).setPreferredWidth(318);
@@ -182,6 +194,10 @@ public class PainelCliente extends JPanel {
 		tabelaClientes.setDefaultEditor(Object.class, null);
 	}
 
+	/**
+	 * popular tabela
+	 * @throws IOException
+	 */
 	private void carregarTabela() throws IOException {
 		Cliente clienteRequisicao = new Cliente();
 		clienteRequisicao.setRequisicao(Solicitacao.LISTAR);

@@ -21,7 +21,11 @@ import br.univel.model.dto.Cliente;
 import br.univel.model.enums.Solicitacao;
 import br.univel.model.enums.Telas;
 import br.univel.view.TelaPrincipal;
-
+/**
+ * Tela para inclusao/altearcao de dados do cliente
+ * @author Eduardo
+ *
+ */
 public class DadosCliente extends JPanel {
 	private JTextField tfNome;
 	private JTextField tfDataNasc;
@@ -159,6 +163,9 @@ public class DadosCliente extends JPanel {
 
 	}
 
+	/**
+	 * Popular campos da tela
+	 */
 	public void preencheCampos() {
 		if (ClienteAlterar.getInstancia().getCliente() != null) {
 			tfNome.setText(ClienteAlterar.getCliente().getNomeCliente());

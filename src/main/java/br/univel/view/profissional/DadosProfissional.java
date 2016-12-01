@@ -24,6 +24,11 @@ import br.univel.model.enums.Solicitacao;
 import br.univel.model.enums.Telas;
 import br.univel.view.TelaPrincipal;
 
+/**
+ * Tela para inclusao/altearcao de dados do profissional
+ * @author Eduardo
+ *
+ */
 public class DadosProfissional extends JPanel {
 	private JTextField tfNome;
 	private JTextField tfDataNasc;
@@ -167,6 +172,9 @@ public class DadosProfissional extends JPanel {
 		add(btnVoltar, gbc_btnVoltar);
 	}
 
+	/**
+	 * Popular campos da tela
+	 */
 	public void preencheCampos() {
 		if (ProfissionalAlterar.getProfissional() != null) {
 			tfNome.setText(ProfissionalAlterar.getProfissional().getNomeProfissional());

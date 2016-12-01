@@ -30,6 +30,11 @@ import br.univel.model.enums.Solicitacao;
 import br.univel.model.enums.Telas;
 import br.univel.view.TelaPrincipal;
 
+/**
+ * Tela para listar profissionais
+ * @author Eduardo
+ *
+ */
 public class PainelProfissional extends JPanel {
 	private JTable tabelaProfissionais;
 	private DefaultTableModel modelo;
@@ -153,6 +158,9 @@ public class PainelProfissional extends JPanel {
 		carregarTabela();
 	}
 
+	/**
+	 * atualizar tabela
+	 */
 	private void atualizarTabela() {
 		tabelaProfissionais.getColumnModel().getColumn(0).setResizable(false);
 		tabelaProfissionais.getColumnModel().getColumn(0).setPreferredWidth(318);
@@ -170,6 +178,9 @@ public class PainelProfissional extends JPanel {
 		tabelaProfissionais.setDefaultEditor(Object.class, null);
 	}
 
+	/**
+	 * popular tabela
+	 */
 	private void carregarTabela() {
 		Profissional profissionalRequisicao = new Profissional();
 		profissionalRequisicao.setRequisicao(Solicitacao.LISTAR);
@@ -193,6 +204,10 @@ public class PainelProfissional extends JPanel {
 		atualizarTabela();
 	}
 
+	/**
+	 * Redefinir modelo da tabela
+	 * @return
+	 */
 	private DefaultTableModel createModel() {
 		return (new DefaultTableModel(new Object[][] {}, new String[] { "Nome", "Data Nasc", "Login", "", "" }) {
 			Class[] columnTypes = new Class[] { String.class, String.class, String.class, String.class, Integer.class };
